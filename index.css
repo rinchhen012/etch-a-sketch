@@ -1,0 +1,25 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+#container {
+  position: absolute;
+  top: 25vh;
+  left: 25vw;
+  background-color: aqua;
+  height: 70vh;
+  width: 50vw;
+  display: grid;
+  grid-template-columns: repeat(16, auto);
+}
+
+.box {
+  background-color: rgb(253, 102, 14);
+}
+
+.box:hover {
+  background-color: yellowgreen;
+}
