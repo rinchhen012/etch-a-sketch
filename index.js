@@ -1,55 +1,84 @@
+let choice = 16;
 const container = document.querySelector('#container');
-const defaultColor = '#a52a23';
-let choice = 256;
+const defaultColor = '#ffffff';
 
-gridCreate();
+gridCreate(choice ** 2);
+custom();
 
 const gridSwitch = document.querySelector('.remove-grid');
-gridSwitch.addEventListener('mousedown', gridSwitcher);
+gridSwitch.addEventListener('click', gridSwitcher);
 
-// changes to default grid layout
-const defaultGrid = document.querySelector('.default');
-defaultGrid.addEventListener('mousedown', () => {
-    choice = 256;
-    gridCreate();
-    container.style.gridTemplateColumns = `repeat(16, auto)`;
-    container.style.gridTemplateRows = `repeat(16, auto)`;
+// reset entire container
+const reset = document.querySelector('.reset');
+reset.addEventListener('click', () => {
+    const boxes = Array.from(document.querySelectorAll('.box'));
+    boxes.forEach(box => {
+        box.style.backgroundColor = defaultColor;
+    })
 });
 
+listeners();
+
+function listeners() {
+    const boxes = Array.from(document.querySelectorAll('.box'));
+    boxes.forEach(box => {
+        box.addEventListener('mousedown', event => {
+            if (event.button === 0) {
+                box.style.backgroundColor = '#FFD662';
+                event.preventDefault();
+                container.addEventListener('mousemove', move);
+                container.addEventListener('mousemove', event => {
+                    if (event.button === 0 && event.ctrlKey)
+                        event.target.style.backgroundColor = defaultColor;
+                })
+            }
+        })
+    })
+}
+
 // changes to custom grid layout
-const custom = document.querySelector('.custom');
-custom.addEventListener('mousedown', () => {
-    choice = prompt('Enter layout');
-    if (!choice) choice = 16;
-    let colsRows = choice;
-    choice *= choice;
-    gridCreate();
-    choice = choice / colsRows;
-    container.style.gridTemplateColumns = `repeat(${choice}, auto)`;
-    container.style.gridTemplateRows = `repeat(${choice}, auto)`;
-})
-
-const boxes = Array.from(document.querySelectorAll('.box'));
-
-for (let box of boxes) {
-    // reset entire container
-    const reset = document.querySelector('.reset');
-    reset.addEventListener('mousedown', () => {
-        box.style.backgroundColor = defaultColor;
-    });
-    // calls move func when mousedown and mousemove
-    box.addEventListener('mousedown', event => {
-        if (event.button === 0) {
-            box.style.backgroundColor = '#FFD662';
-            event.preventDefault();
-            container.addEventListener('mousemove', move);
-            container.addEventListener('mousemove', eraser);
+function custom() {
+    const custom = document.querySelector('.custom');
+    custom.addEventListener('click', () => {
+        container.innerHTML = "";
+        choice = prompt('Enter layout');
+        if (choice <= 0 || choice > 64)
+            alert('invalid!');
+        else {
+            let colsRows = choice;
+            choice *= choice;
+            gridCreate(choice);
+            listeners();
+            choice = choice / colsRows;
+            container.style.gridTemplateColumns = `repeat(${choice}, auto)`;
+            container.style.gridTemplateRows = `repeat(${choice}, auto)`;
         }
     });
+
+}
+// get random rgb values
+function randomRgb() {
+    let r, g, b;
+    do {
+        r = Math.round(Math.random() * 255);
+        g = Math.round(Math.random() * 255);
+        b = Math.round(Math.random() * 255);
+    }
+    while (r == g == b == 255)
+    return [r, g, b];
+}
+
+// get black
+function addBlack(rgb) {
+    let r = Math.round(rgb[0] * 0.7);
+    let g = Math.round(rgb[1] * 0.7);
+    let b = Math.round(rgb[2] * 0.7);
+    return [r, g, b];
 }
 
 // switches gridline 1/0
 function gridSwitcher() {
+    const boxes = Array.from(document.querySelectorAll('.box'));
     if (event.target.textContent == 'Remove Gridlines') {
         event.target.textContent = 'Show Gridlines';
         for (box of boxes)
@@ -57,15 +86,14 @@ function gridSwitcher() {
     }
     else {
         event.target.textContent = 'Remove Gridlines';
-        for (box of boxes)
-            box.style.border = '1px solid rgb(85, 21, 21)';
+        for (let box of boxes)
+            box.style.border = '1px solid rgb(71, 71, 71)';
     }
 }
 
 // creates divs
-function gridCreate() {
-    container.innerHTML = '';
-    for (let i = 0; i < choice; i++) {
+function gridCreate(x) {
+    for (let i = 0; i < x; i++) {
         let div = document.createElement('div');
         container.appendChild(div);
         div.className = 'box';
@@ -74,16 +102,11 @@ function gridCreate() {
 
 function move(event) {
     if (event.button === 0 && event.ctrlKey)
-        eraser();
+        event.target.style.backgroundColor = defaultColor;
 
     // Removes colorize on hover effect.
     if (event.buttons === 0)
         container.removeEventListener('mousemove', move);
-
-    event.target.style.backgroundColor = '#FFD662';
-}
-
-function eraser(event) {
-    if (event.button === 0 && event.ctrlKey)
-        event.target.style.backgroundColor = defaultColor;
+    rgb = randomRgb();
+    event.target.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
 }
