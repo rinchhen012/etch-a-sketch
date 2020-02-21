@@ -4,6 +4,9 @@ let choice = 256;
 
 gridCreate();
 
+const gridSwitch = document.querySelector('.remove-grid');
+gridSwitch.addEventListener('mousedown', gridSwitcher);
+
 // changes to default grid layout
 const defaultGrid = document.querySelector('.default');
 defaultGrid.addEventListener('mousedown', () => {
@@ -43,6 +46,20 @@ for (let box of boxes) {
             container.addEventListener('mousemove', eraser);
         }
     });
+}
+
+// switches gridline 1/0
+function gridSwitcher() {
+    if (event.target.textContent == 'Remove Gridlines') {
+        event.target.textContent = 'Show Gridlines';
+        for (box of boxes)
+            box.style.border = 'none';
+    }
+    else {
+        event.target.textContent = 'Remove Gridlines';
+        for (box of boxes)
+            box.style.border = '1px solid rgb(85, 21, 21)';
+    }
 }
 
 // creates divs

@@ -8,15 +8,18 @@ body {
 
 #info {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   color: aliceblue;
-  top: 20%;
+  top: 10%;
+  left: 95px;
   font-family: cursive;
   font-size: 20px;
-  margin-left: 45px;
 }
 
-h1 {
+.remove-grid {
   margin-left: 60px;
+  margin-top: 50px;
 }
 
 #buttons {
@@ -27,8 +30,10 @@ h1 {
   right: 150px;
 }
 
-#buttons > button {
+#buttons > button,
+.remove-grid {
   height: 100px;
+  width: 150px;
   border-radius: 20px;
   border-style: none;
   padding: 0 10px;
@@ -38,10 +43,11 @@ h1 {
   color: rgb(17, 17, 17);
   font-size: 22px;
   font-family: cursive;
-  box-shadow: rgb(241, 237, 9) 0 0 6px 2px;
+  box-shadow: rgb(241, 237, 9) 0 0 2px 2px;
 }
 
-#buttons > button:hover {
+#buttons > button:hover,
+.remove-grid:hover {
   background-color: #40e018;
   box-shadow: green 0 0 35px 20px;
 }
