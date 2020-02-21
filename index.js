@@ -1,29 +1,72 @@
-let container = document.querySelector('#container');
+const container = document.querySelector('#container');
+const defaultColor = '#a52a23';
+let choice = 256;
 
-// creating 16x16 divs
-for (let i = 0; i < 256; i++) {
-    let div = document.createElement('div');
-    container.appendChild(div);
-    div.className = 'box';
-}
+gridCreate();
 
-let boxes = Array.from(document.querySelectorAll('.box'));
+// changes to default grid layout
+const defaultGrid = document.querySelector('.default');
+defaultGrid.addEventListener('mousedown', () => {
+    choice = 256;
+    gridCreate();
+    container.style.gridTemplateColumns = `repeat(16, auto)`;
+    container.style.gridTemplateRows = `repeat(16, auto)`;
+});
+
+// changes to custom grid layout
+const custom = document.querySelector('.custom');
+custom.addEventListener('mousedown', () => {
+    choice = prompt('Enter layout');
+    if (!choice) choice = 16;
+    let colsRows = choice;
+    choice *= choice;
+    gridCreate();
+    choice = choice / colsRows;
+    container.style.gridTemplateColumns = `repeat(${choice}, auto)`;
+    container.style.gridTemplateRows = `repeat(${choice}, auto)`;
+})
+
+const boxes = Array.from(document.querySelectorAll('.box'));
+
 for (let box of boxes) {
+    // reset entire container
+    const reset = document.querySelector('.reset');
+    reset.addEventListener('mousedown', () => {
+        box.style.backgroundColor = defaultColor;
+    });
+    // calls move func when mousedown and mousemove
     box.addEventListener('mousedown', event => {
         if (event.button === 0) {
-            box.style.backgroundColor = 'red';
+            box.style.backgroundColor = '#FFD662';
             event.preventDefault();
-            window.addEventListener('mousemove', move);
+            container.addEventListener('mousemove', move);
+            container.addEventListener('mousemove', eraser);
         }
-    })
+    });
+}
+
+// creates divs
+function gridCreate() {
+    container.innerHTML = '';
+    for (let i = 0; i < choice; i++) {
+        let div = document.createElement('div');
+        container.appendChild(div);
+        div.className = 'box';
+    }
 }
 
 function move(event) {
-    if (event.buttons === 0)
-        window.removeEventListener('mousemove', move);
+    if (event.button === 0 && event.ctrlKey)
+        eraser();
 
+    // Removes colorize on hover effect.
+    if (event.buttons === 0)
+        container.removeEventListener('mousemove', move);
+
+    event.target.style.backgroundColor = '#FFD662';
 }
 
 function eraser(event) {
-
+    if (event.button === 0 && event.ctrlKey)
+        event.target.style.backgroundColor = defaultColor;
 }

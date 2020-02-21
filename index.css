@@ -3,21 +3,70 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  background-color: rgb(17, 17, 17);
+}
+
+#info {
+  position: absolute;
+  color: aliceblue;
+  top: 20%;
+  font-family: cursive;
+  font-size: 20px;
+  margin-left: 45px;
+}
+
+h1 {
+  margin-left: 60px;
+}
+
+#buttons {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 28%;
+  right: 150px;
+}
+
+#buttons > button {
+  height: 100px;
+  border-radius: 20px;
+  border-style: none;
+  padding: 0 10px;
+  background-color: #ebd339;
+  margin-bottom: 50px;
+  text-align: center;
+  color: rgb(17, 17, 17);
+  font-size: 22px;
+  font-family: cursive;
+  box-shadow: rgb(241, 237, 9) 0 0 6px 2px;
+}
+
+#buttons > button:hover {
+  background-color: #40e018;
+  box-shadow: green 0 0 35px 20px;
+}
+
+#buttons .reset:hover {
+  background-color: rgb(194, 24, 24);
+  box-shadow: red 0 0 30px 15px;
+  color: rgb(231, 229, 229);
 }
 
 #container {
   position: absolute;
-  top: 25vh;
+  top: 10vh;
   left: 25vw;
-  background-color: aqua;
-  height: 70vh;
+  height: 80vh;
   width: 50vw;
   display: grid;
   grid-template-columns: repeat(16, auto);
+  grid-template-rows: repeat(16, auto);
+  box-shadow: rgb(165, 14, 14) 0 0 10px 10px;
 }
 
 .box {
-  background-color: rgb(253, 102, 14);
+  background-color: #a52a23;
+  border: 1px solid rgb(85, 21, 21);
 }
 
 .box:hover {
