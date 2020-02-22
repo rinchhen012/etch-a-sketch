@@ -41,7 +41,9 @@ function listeners() {
 
 // changes to custom grid layout using user input
 function custom() {
+    const gridSwitch = document.querySelector('.remove-grid');
     const custom = document.querySelector('.custom');
+    const boxes = Array.from(document.querySelectorAll('.box'));
     custom.addEventListener('click', () => {
         container.innerHTML = "";
         choice = prompt('Enter layout');
@@ -56,6 +58,11 @@ function custom() {
             container.style.gridTemplateColumns = `repeat(${choice}, auto)`;
             container.style.gridTemplateRows = `repeat(${choice}, auto)`;
         }
+        if (gridSwitch.textContent == 'Remove Gridlines') {
+            gridSwitch.textContent = 'Show Gridlines';
+            for (let box of boxes)
+                box.style.border = '1px solid rgb(71, 71, 71)';
+        }
     });
 }
 
@@ -69,7 +76,7 @@ function gridSwitcher() {
     const boxes = Array.from(document.querySelectorAll('.box'));
     if (event.target.textContent == 'Show Gridlines') {
         event.target.textContent = 'Remove Gridlines';
-        for (box of boxes)
+        for (let box of boxes)
             box.style.border = '1px solid rgb(71, 71, 71)';
     }
     else {
