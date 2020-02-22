@@ -18,7 +18,7 @@ reset.addEventListener('click', () => {
 });
 
 listeners();
-
+// mousedown event listener to call move() & eraser  
 function listeners() {
     const boxes = Array.from(document.querySelectorAll('.box'));
     boxes.forEach(box => {
@@ -35,15 +35,14 @@ function listeners() {
         })
     })
 }
-
-// changes to custom grid layout
+// changes to custom grid layout using user input
 function custom() {
     const custom = document.querySelector('.custom');
     custom.addEventListener('click', () => {
         container.innerHTML = "";
         choice = prompt('Enter layout');
         if (choice <= 0 || choice > 64)
-            alert('invalid!');
+            alert('invalid! enter again');
         else {
             let colsRows = choice;
             choice *= choice;
@@ -54,28 +53,18 @@ function custom() {
             container.style.gridTemplateRows = `repeat(${choice}, auto)`;
         }
     });
-
 }
 // get random rgb values
 function randomRgb() {
-    let r, g, b;
-    do {
-        r = Math.round(Math.random() * 255);
-        g = Math.round(Math.random() * 255);
-        b = Math.round(Math.random() * 255);
-    }
-    while (r == g == b == 255)
-    return [r, g, b];
+    return Math.floor(Math.random() * 256);
 }
-
-// get black
+// get black values
 function addBlack(rgb) {
     let r = Math.round(rgb[0] * 0.7);
     let g = Math.round(rgb[1] * 0.7);
     let b = Math.round(rgb[2] * 0.7);
     return [r, g, b];
 }
-
 // switches gridline 1/0
 function gridSwitcher() {
     const boxes = Array.from(document.querySelectorAll('.box'));
@@ -90,7 +79,6 @@ function gridSwitcher() {
             box.style.border = '1px solid rgb(71, 71, 71)';
     }
 }
-
 // creates divs
 function gridCreate(x) {
     for (let i = 0; i < x; i++) {
@@ -99,14 +87,18 @@ function gridCreate(x) {
         div.className = 'box';
     }
 }
-
-function move(event) {
-    if (event.button === 0 && event.ctrlKey)
-        event.target.style.backgroundColor = defaultColor;
-
+// colors the box when mouse is moved
+function move() {
     // Removes colorize on hover effect.
     if (event.buttons === 0)
         container.removeEventListener('mousemove', move);
-    rgb = randomRgb();
-    event.target.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+
+    let boxColor = event.target.style.backgroundColor;
+    let boxOpacity = event.target.style.opacity;
+
+    if (boxColor == "")
+        event.target.style.backgroundColor = `rgb(${randomRgb()},${randomRgb()},${randomRgb()})`;
+
+    if (boxOpacity > 0)
+        event.target.style.opacity = boxOpacity - 0.1;
 }
